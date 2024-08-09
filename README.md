@@ -19,7 +19,10 @@ Rescube using the following libraries for its operations -
 https://github.com/nopnop2002/esp-idf-ssd1306 -For SSD1306 I2C oled display
 
 https://github.com/nopnop2002/esp-idf-sx127x - For Lora Ra02 Module (SX1278)
+
+Outdoors-
 ![1721929019747](https://github.com/user-attachments/assets/1d6650ac-6498-42d7-895d-8d551b665642)
+Schematics-
 ![1721929062422](https://github.com/user-attachments/assets/3e5d944a-8949-45aa-8562-702755c52917)
 
 
