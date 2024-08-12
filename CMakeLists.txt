@@ -1,0 +1,12 @@
+# See the build system documentation in IDF programming guide
+# for more information about component CMakeLists.txt files.
+
+idf_component_register(
+    SRCS main.c bmp180.c ssd1306.c ssd1306_i2c_legacy.c ssd1306_spi.c lora.c ultrasonic.c   # list the source files of this component
+    INCLUDE_DIRS        # optional, add here public include directories
+    PRIV_INCLUDE_DIRS   # optional, add here private include directories
+    REQUIRES            # optional, list the public requirements (component names)
+    PRIV_REQUIRES       # optional, list the private requirements
+)
+
+
