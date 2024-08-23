@@ -20,12 +20,12 @@ https://github.com/nopnop2002/esp-idf-ssd1306 -For SSD1306 I2C oled display
 
 https://github.com/nopnop2002/esp-idf-sx127x - For Lora Ra02 Module (SX1278)
 
-Outdoors-
+Outdoors_1-
 ![1721929019747](https://github.com/user-attachments/assets/1d6650ac-6498-42d7-895d-8d551b665642)
+Outdoors_2-
+![IMG_20240801_122347](https://github.com/user-attachments/assets/0db684e5-3030-40ab-92da-23f038ac1a56)
 Schematics-
-![1721929062422](https://github.com/user-attachments/assets/3e5d944a-8949-45aa-8562-702755c52917)
-
-
+![circuit](https://github.com/user-attachments/assets/536f412e-e37d-413c-9ee5-3ef3d0e422a9)
 
 
 
