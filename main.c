@@ -15,14 +15,13 @@
 #include "sdkconfig.h"
 #include "driver/i2c.h"
 #include "esp_err.h"
-#include "bmp180.h"
+#include "soc/gpio_num.h"
 #include "ssd1306.h"
 #include "esp_log.h"
 #include <esp_intr_alloc.h>
 #include "lora.h"
 #include "driver/uart.h"
 #include "stdint.h"
-#include "ultrasonic.h"
 #include "time.h"
 #include "esp_timer.h"
 #include "driver/timer.h"
@@ -149,6 +148,7 @@ void task_2(void *arg) {
     while (1) {
         int length = uart_read_bytes(GPS_UART_PORT_NUM, data, BUF_SIZE - 1, 20 / portTICK_PERIOD_MS);
         if (length > 0) {
+		    
             data[length] = '\0'; 
             ESP_LOGI(TAG, "Received: %s", data);
 
@@ -166,6 +166,7 @@ void task_2(void *arg) {
             lora_enable_crc();
             lora_send_packet((uint8_t*)lora_payload, strlen(lora_payload));
             printf("Packet sent...\n");
+          
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));
@@ -196,43 +197,67 @@ void task_3(void *arg) {
     ssd1306_display_text_x3(&dev, 0, "SOS", 3, false);
     ssd1306_display_text(&dev, 4, code, 15, false);
     ssd1306_display_text(&dev, 5, "...---...", 9, false);
-	gpio_set_level(17, 1);
-    vTaskDelay(300/portTICK_PERIOD_MS); // .
-    gpio_set_level(17, 0);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(300/portTICK_PERIOD_MS); // .
-    gpio_set_level(17, 1);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(300/portTICK_PERIOD_MS); // .
-    gpio_set_level(17, 0);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(1000/portTICK_PERIOD_MS); // -
-    gpio_set_level(17, 1);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(1000/portTICK_PERIOD_MS); // -
-    gpio_set_level(17, 0);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(1000/portTICK_PERIOD_MS); // -
-    gpio_set_level(17, 1);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(300/portTICK_PERIOD_MS); // .
-    gpio_set_level(17, 0);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(300/portTICK_PERIOD_MS); // .
-    gpio_set_level(17, 0);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    gpio_set_level(17, 1);
-    vTaskDelay(300/portTICK_PERIOD_MS); // .
-    gpio_set_level(17, 0);
-    vTaskDelay(100/portTICK_PERIOD_MS);
-    
+		
+// SOS: ... --- ...
+
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(300 / portTICK_PERIOD_MS); // .
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS);
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(300 / portTICK_PERIOD_MS); // .
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS);
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(300 / portTICK_PERIOD_MS); // .
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS); // Inter-character gap
+
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(800 / portTICK_PERIOD_MS); // -
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS);
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(800 / portTICK_PERIOD_MS); // -
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS);
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(800 / portTICK_PERIOD_MS); // -
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS); // Inter-character gap
+
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(300 / portTICK_PERIOD_MS); // .
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS);
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(300 / portTICK_PERIOD_MS); // .
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(300 / portTICK_PERIOD_MS);
+gpio_set_level(17, 1);
+gpio_set_level(16, 1);
+vTaskDelay(300 / portTICK_PERIOD_MS); // .
+gpio_set_level(17, 0);
+gpio_set_level(16, 0);
+vTaskDelay(800 / portTICK_PERIOD_MS); // Inter-word gap
+
+
         }
         
     }
@@ -318,10 +343,15 @@ void menu_return(void *arg)
      xSemaphoreGive(xMutex);	
      while(1)
      {
-        ssd1306_display_text(&dev, 0, "Gpio x for Option 1", 20, false);
-        ssd1306_display_text(&dev, 1, "Gpio y for Option 2", 20, false);
-        ssd1306_display_text(&dev, 2, "Gpuo z for Option 3", 20, false);
-        ssd1306_display_text(&dev, 3, "Gpio a for Option 4", 20, false); 
+        ssd1306_clear_screen(&dev, false);
+        ssd1306_display_text_x3(&dev, 0, "ResCb", 20, false);
+        ssd1306_display_text(&dev, 3, "by Aryan B. ", 20, false);
+        ssd1306_display_text(&dev, 5, "Btn1 for SOS_TX", 20, false);
+        ssd1306_display_text(&dev, 4, "Btn2 for StopWtch ", 20, false);
+        ssd1306_display_text(&dev, 5, "Btn1 for SOS_TX", 20, false);
+        ssd1306_display_text(&dev, 6, "Btn3 for Morse_SOS", 20, false);
+        ssd1306_display_text(&dev, 7, "Btn4 for Menu", 20, false); 
+        vTaskDelay(200/portTICK_PERIOD_MS);
 	 }
 	}
 }
@@ -337,31 +367,56 @@ void menu_init(void *arg)
     ssd1306_init(&dev, 128, 64);
     ssd1306_contrast(&dev, 0xff);
     ssd1306_clear_screen(&dev, false);
-    ssd1306_display_text(&dev, 0, "Gpio x for Option 1", 20, false);
-        ssd1306_display_text(&dev, 1, "Gpio y for Option 2", 20, false);
-        ssd1306_display_text(&dev, 2, "Gpuo z for Option 3", 20, false);
-        ssd1306_display_text(&dev, 3, "Gpio a for Option 4", 20, false); 
+        ssd1306_display_text_x3(&dev, 0, "ResCb", 20, false);
+        ssd1306_display_text(&dev, 3, "by Aryan B. ", 20, false);
+        ssd1306_display_text(&dev, 5, "Btn1 for SOS_TX", 20, false);
+        ssd1306_display_text(&dev, 4, "Btn2 for StopWtch ", 20, false);
+        ssd1306_display_text(&dev, 5, "Btn1 for SOS_TX", 20, false);
+        ssd1306_display_text(&dev, 6, "Btn3 for Morse_SOS", 20, false);
+        ssd1306_display_text(&dev, 7, "Btn4 for Menu", 20, false); 
     while (1)
     {
 		ESP_LOGI(TAG, "Menu is still running");
         //example input gpios (you can use any gpio of your choice)  
-        int gpio_36 = gpio_get_level(36);
-        int gpio_35 = gpio_get_level(35);
-        int gpio_34 = gpio_get_level(34);
-        int gpio_39 = gpio_get_level(39);
+       
+        int sound_check_flag= 0;
+        int gpio_25 = gpio_get_level(25);
+        int gpio_26 = gpio_get_level(26);
+        int gpio_33 = gpio_get_level(33);
         int gpio_32 = gpio_get_level(32);
+        int gpio_4 = gpio_get_level(4);
 
-        printf("GPIO 36: %d\n", gpio_36);
+        printf("GPIO 25: %d\n", gpio_25);
         vTaskDelay(400 / portTICK_PERIOD_MS);
-        printf("GPIO 35: %d\n", gpio_35);
+        printf("GPIO 26: %d\n", gpio_26);
         vTaskDelay(400 / portTICK_PERIOD_MS);
-        printf("GPIO 34: %d\n", gpio_34);
+        printf("GPIO 33: %d\n", gpio_33);
         vTaskDelay(400 / portTICK_PERIOD_MS); 
-        printf("GPIO 39: %d\n", gpio_39);
+        printf("GPIO 32: %d\n", gpio_32);
         vTaskDelay(400 / portTICK_PERIOD_MS); 
+        printf("GPIO 4: %d\n", gpio_4);
+        vTaskDelay(400 / portTICK_PERIOD_MS);
       
-        
-         if (gpio_39 == 1 && handle1 == NULL) {
+           
+       if ((gpio_4 == 0))
+       {
+           gpio_set_level(17, 0);
+           gpio_set_level(16, 0);
+          vTaskDelay(100/ portTICK_PERIOD_MS);
+          gpio_set_level(17, 1);
+          gpio_set_level(16, 1);
+          vTaskDelay               (2000 / portTICK_PERIOD_MS); 
+          gpio_set_level(17, 0);
+          gpio_set_level(16, 0);
+          vTaskDelay(100 / portTICK_PERIOD_MS);
+          gpio_set_level(17, 1);
+          gpio_set_level(16, 1);
+          vTaskDelay(2000 / portTICK_PERIOD_MS);
+          gpio_set_level(17, 0);
+          gpio_set_level(16, 0);
+          ESP_LOGI(TAG, "ALARM");
+	   }
+         else if (gpio_25 == 1 && handle1 == NULL) {
             xTaskCreatePinnedToCore(&task_1, "Task 1", 4096, NULL, 5, &handle1, 1);
             if (handle2) vTaskDelete(handle2);
             if (handle3) vTaskDelete(handle3);
@@ -369,8 +424,9 @@ void menu_init(void *arg)
             if (handle5) vTaskDelete(handle5);
             if (handle6) vTaskDelete(handle6);
             if (menu_rtr) vTaskDelete(handle6);
+            sound_check_flag = 0;
         menu_rtr = handle2 = handle3 = handle4 = handle5 = handle6 = NULL;
-        } else if (gpio_36 == 1 && handle2 == NULL) {
+        } else if (gpio_26 == 1 && handle2 == NULL) {
             xTaskCreatePinnedToCore(&task_2, "Task 2", 4096*2, NULL, 5, &handle2, 1);
             if (handle1) vTaskDelete(handle1);
             if (handle3) vTaskDelete(handle3);
@@ -378,8 +434,9 @@ void menu_init(void *arg)
             if (handle5) vTaskDelete(handle5);
             if (handle6) vTaskDelete(handle6);
             if (menu_rtr) vTaskDelete(handle6);
+            sound_check_flag = 0;
           menu_rtr =  handle1 = handle3 = handle4 = handle5 = handle6 = NULL;
-        } else if (gpio_35 == 1 && handle3 == NULL) {
+        } else if (gpio_33 == 1 && handle3 == NULL) {
             xTaskCreatePinnedToCore(&task_3, "Task 3", 4096, NULL, 5, &handle3, 1);
             if (handle1) vTaskDelete(handle1);
             if (handle2) vTaskDelete(handle2);
@@ -387,16 +444,20 @@ void menu_init(void *arg)
             if (handle5) vTaskDelete(handle5);
             if (handle6) vTaskDelete(handle6);
             if (menu_rtr) vTaskDelete(handle6);
+            sound_check_flag = 1;
         menu_rtr = handle1 = handle2 = handle4 = handle5 = handle6 = NULL;
-        } else if (gpio_34 == 1 && handle4 == NULL) {
-            xTaskCreatePinnedToCore(&task_4, "Task 4", 4096, NULL, 5, &handle4, 1);
+        } else if (gpio_32== 1 && handle4 == NULL) {
+            xTaskCreatePinnedToCore(&menu_return, "Task 4", 4096, NULL, 5, &menu_rtr, 1);
             if (handle1) vTaskDelete(handle1);
             if (handle2) vTaskDelete(handle2);
             if (handle3) vTaskDelete(handle3);
             if (handle5) vTaskDelete(handle5);
             if (handle6) vTaskDelete(handle6);
             if (menu_rtr) vTaskDelete(handle6);
+            sound_check_flag = 0;
          menu_rtr =  handle1 = handle2 = handle3 = handle5 = handle6 = NULL;
+      
+       
         } 
 }
 }
@@ -407,19 +468,24 @@ void menu_init(void *arg)
 void app_main()
 {
    	//gpio configuration
-    gpio_set_direction(35, GPIO_MODE_INPUT);
-    gpio_set_direction(36, GPIO_MODE_INPUT);
-    gpio_set_direction(39, GPIO_MODE_INPUT);
-    gpio_set_direction(35, GPIO_MODE_INPUT);
+    gpio_set_direction(25, GPIO_MODE_INPUT);
+    gpio_set_direction(26, GPIO_MODE_INPUT);
+    gpio_set_direction(33, GPIO_MODE_INPUT);
+    gpio_set_direction(32, GPIO_MODE_INPUT);
     gpio_set_direction(17, GPIO_MODE_OUTPUT);
+    gpio_set_direction(16, GPIO_MODE_OUTPUT);
+    gpio_set_direction(34, GPIO_MODE_INPUT);
+   
+    
     
     gpio_config_t io_conf;
     io_conf.intr_type= GPIO_INTR_DISABLE;
     io_conf.mode=GPIO_MODE_INPUT;
-    io_conf.pin_bit_mask = (1ULL<< GPIO_NUM_32);
+    io_conf.pin_bit_mask =  (1ULL << 25) | (1ULL << 26) | (1ULL << 33) | (1ULL << 32) | (1ULL << 4); 
     io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
-    io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    io_conf.pull_down_en = GPIO_PULLDOWN_ENABLE;
     gpio_config(&io_conf);
+    
     xMutex = xSemaphoreCreateMutex();
     xSemaphoreGive(xMutex);
     xTaskCreatePinnedToCore(&menu_init, "Main menu task", 4092 * 2, NULL, 6, &menu_str, 0);
