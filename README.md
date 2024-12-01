@@ -19,6 +19,9 @@ ResCube is equipped with several features that can assist in various survival sc
 4. **Rangefinders**  
    Two ultrasonic sensors (HC-SR04 and JSN-SR04T) are used for rangefinding operations. These can help measure the depth of falls, water bodies, or even a cave's drop using the JSN-SR04T's waterproof probe.
 
+5. **Proximity/Audio Sensors**
+   Swappable sensors that can be used to detect perimeter/entrance intrusion using audio-visual alerts.
+
 ## Libraries Used
 
 ResCube makes use of the following libraries:
@@ -38,6 +41,8 @@ Outdoors_1-
 ![1721929019747](https://github.com/user-attachments/assets/1d6650ac-6498-42d7-895d-8d551b665642)
 Outdoors_2-
 ![IMG_20240801_122347](https://github.com/user-attachments/assets/0db684e5-3030-40ab-92da-23f038ac1a56)
+Outdoors_3-
+![WhatsApp Image 2024-12-01 at 5 15 54 PM](https://github.com/user-attachments/assets/57319153-c62b-4cca-93d0-a5574d73dbf4)
 Schematics-
 ![circuit](https://github.com/user-attachments/assets/536f412e-e37d-413c-9ee5-3ef3d0e422a9)
 
